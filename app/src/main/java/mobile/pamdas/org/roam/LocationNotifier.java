@@ -1,4 +1,10 @@
-package mobile.pamdas.org.roam;/*
+/**
+ * Modified version of a class contained in a google location demo app,
+ * Note that its APL licensed: https://www.apache.org/licenses/LICENSE-2.0
+ */
+
+package mobile.pamdas.org.roam;
+/*
  * Copyright (C) 2017 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -96,21 +102,12 @@ class LocationNotifier {
                 .apply();
     }
 
-    /**
-     * Fetches location results from {@link android.content.SharedPreferences}.
-     */
+
     static String getSavedLocationResult(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(KEY_LOCATION_UPDATES_RESULT, "");
     }
 
-    /**
-     * Get the notification mNotificationManager.
-     * <p>
-     * Utility method as this helper works with it a lot.
-     *
-     * @return The system service NotificationManager
-     */
     private NotificationManager getNotificationManager() {
         if (mNotificationManager == null) {
             mNotificationManager = (NotificationManager) mContext.getSystemService(
