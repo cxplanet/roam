@@ -1,6 +1,7 @@
 /**
  * Modified version of a class contained in a google location demo app,
- * Note that its APL licensed: https://www.apache.org/licenses/LICENSE-2.0
+ * to encapsulate notifications.
+ * Note that its APLv2 licensed: https://www.apache.org/licenses/LICENSE-2.0
  */
 
 package mobile.pamdas.org.roam;

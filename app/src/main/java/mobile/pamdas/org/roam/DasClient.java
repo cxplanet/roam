@@ -1,6 +1,7 @@
 package mobile.pamdas.org.roam;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -11,16 +12,18 @@ import org.json.JSONArray;
 
 public class DasClient {
 
-    private final String mProvider;
-    private final String mAuthToken;
+    private static final String TAG = MainActivity.class.getSimpleName();
+    // todo make provider configurable
+    private final String mProvider = "roam-mobile";
+    // todo - get this out of code. maybe put this is the keystore?
+    private final String mAuthToken = "Wt39P5yRlGw9VmwxVGRx4UOmnHfXAH";
     private final Context mContext;
     private String mDasEndpoint;
 
-    public DasClient(String provider, String token, Context ctx) {
-        mProvider = provider;
-        mAuthToken = token;
+    public DasClient(Context ctx) {
         mContext = ctx;
         AndroidNetworking.initialize(mContext.getApplicationContext());
+        setDasEndpoint("https://dev.pamdas.org/api/v1.0");
     }
 
     public void setDasEndpoint(String endpoint) {
@@ -28,20 +31,22 @@ public class DasClient {
     }
 
     public void postRadioSensorUpdate(RadioObservation obs) {
-        String sensorEndpoint = String.format("%s/sensor/update", mDasEndpoint);
+        String sensorEndpoint = String.format("%s/sensors/dasradioagent/roam-mobile/status", mDasEndpoint);
+        Log.d(TAG, obs.toJson().toString());
         AndroidNetworking.post(sensorEndpoint)
+                .setContentType("application/json; charset=utf-8")
+                .addHeaders("Authorization", "Bearer " + mAuthToken)
                 .addJSONObjectBody(obs.toJson()) // posting json
-                .setTag("test")
                 .setPriority(Priority.MEDIUM)
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        // do anything with response
+                        Log.i(TAG, response.toString());
                     }
                     @Override
                     public void onError(ANError error) {
-                        // handle error
+                        Log.e(TAG, error.getErrorBody());
                     }
                 });
 
